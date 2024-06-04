@@ -1,13 +1,14 @@
 import { NextFunction, Request, Response } from "express";
 import { getUser } from "../service/auth.js";
 import { ObjectId } from "mongoose";
+import { JwtPayload } from "jsonwebtoken";
 
 
 // Extend Request interface to include token property
 declare global {
     namespace Express {
         interface Request {
-            user: ObjectId
+            user: string | JwtPayload | null
         }
     }
 }

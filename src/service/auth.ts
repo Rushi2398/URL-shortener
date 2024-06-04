@@ -1,11 +1,17 @@
 import mongoose from "mongoose";
+import jwt from 'jsonwebtoken';
 
-const sesssionIdToUserMap = new Map();
+const JWT_SECRET = '@34*U@*F#!'
 
-export const setUser = (id: string, user: mongoose.Types.ObjectId) => {
-    sesssionIdToUserMap.set(id, user)
+export const setUser = (user: mongoose.Types.ObjectId) => {
+    return jwt.sign({ user }, JWT_SECRET);
 }
 
-export const getUser = (id: string) => {
-    return sesssionIdToUserMap.get(id);
+export const getUser = (token: string) => {
+    if (!token) return null;
+    try {
+        return jwt.verify(token, JWT_SECRET);
+    } catch (error) {
+        return null;
+    }
 }
