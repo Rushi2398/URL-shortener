@@ -9,8 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import express from 'express';
 import { URL } from '../models/url.js';
+import { restrictToLoggedUserOnly } from '../middlewares/auth.js';
 export const staticRouter = express.Router();
-staticRouter.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+staticRouter.get('/', restrictToLoggedUserOnly, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (!req.user)
         return res.redirect('/ssr/login');
     const allUrls = yield URL.find({ createdBy: req.user });
