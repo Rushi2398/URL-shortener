@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = '@34*U@*F#!'
 
-export const setUser = (user: mongoose.Types.ObjectId) => {
+export const setUser = (user: Object) => {
     return jwt.sign({ user }, JWT_SECRET);
 }
 

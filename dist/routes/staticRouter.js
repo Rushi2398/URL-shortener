@@ -11,7 +11,9 @@ import express from 'express';
 import { URL } from '../models/url.js';
 export const staticRouter = express.Router();
 staticRouter.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const allUrls = yield URL.find({});
+    if (!req.user)
+        return res.redirect('/ssr/login');
+    const allUrls = yield URL.find({ createdBy: req.user });
     return res.render('home', {
         urls: allUrls
     });

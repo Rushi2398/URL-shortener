@@ -6,6 +6,14 @@ export const restrictToLoggedUserOnly = (req, res, next) => {
     const user = getUser(userId);
     if (!user)
         return res.redirect('/ssr/login');
-    req.user = user;
-    next();
+    if (typeof user !== 'string') {
+        req.user = user.user;
+        next();
+    }
 };
+// export const checkAuth = (req: Request, res: Response, next: NextFunction) => {
+//     const userId = req.cookies.uid;
+//     const user = getUser(userId);
+//     req.user = user!;
+//     next();
+// }

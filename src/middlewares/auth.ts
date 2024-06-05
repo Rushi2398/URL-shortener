@@ -8,7 +8,10 @@ import { JwtPayload } from "jsonwebtoken";
 declare global {
     namespace Express {
         interface Request {
-            user: string | JwtPayload | null
+            user: {
+                user: String,
+                iat: String
+            }
         }
     }
 }
@@ -19,13 +22,15 @@ export const restrictToLoggedUserOnly = (req: Request, res: Response, next: Next
     const user = getUser(userId);
 
     if (!user) return res.redirect('/ssr/login');
-    req.user = user;
-    next();
+    if (typeof user !== 'string') {
+        req.user = user.user;
+        next();
+    }
 }
 
-export const checkAuth = (req: Request, res: Response, next: NextFunction) => {
-    const userId = req.cookies.uid;
-    const user = getUser(userId);
-    req.user = user;
-    next();
-}
+// export const checkAuth = (req: Request, res: Response, next: NextFunction) => {
+//     const userId = req.cookies.uid;
+//     const user = getUser(userId);
+//     req.user = user!;
+//     next();
+// }

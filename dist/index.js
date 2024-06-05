@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use('/user', userRouter);
 app.use('/url', restrictToLoggedUserOnly, router);
-app.use('/ssr', staticRouter);
+app.use('/ssr', restrictToLoggedUserOnly, staticRouter);
 app.use(logFunction("log.txt"));
 app.get('/:shortID', handleGetURL);
 app.listen(PORT, () => console.log(`Server started at PORT: ${PORT}`));

@@ -7,7 +7,7 @@ import { userRouter } from './routes/user.js';
 import { connectMongoDB } from './connection.js';
 import { handleGetURL } from './controllers/url.js';
 import { logFunction } from './middlewares/log.js';
-import { restrictToLoggedUserOnly, checkAuth } from './middlewares/auth.js';
+import { restrictToLoggedUserOnly } from './middlewares/auth.js';
 
 const app = express();
 const PORT = 8001;
@@ -23,7 +23,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use('/user', userRouter);
 app.use('/url', restrictToLoggedUserOnly, router);
-app.use('/ssr', checkAuth, staticRouter);
+app.use('/ssr', restrictToLoggedUserOnly, staticRouter);
 
 app.use(logFunction("log.txt"));
 

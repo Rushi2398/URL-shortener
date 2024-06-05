@@ -7,8 +7,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { v4 as uuidv4 } from 'uuid';
 import { User } from "../models/user.js";
+import { setUser } from "../service/auth.js";
 export const handleUserSignup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, email, password } = req.body;
     yield User.create({
@@ -28,7 +28,7 @@ export const handleUserLogin = (req, res) => __awaiter(void 0, void 0, void 0, f
         return res.render('login', {
             error: "Invalid username or password"
         });
-    const sessionId = uuidv4();
-    res.cookie('uid', sessionId);
+    const token = setUser(user._id);
+    res.cookie('uid', token);
     return res.redirect('/ssr/');
 });
