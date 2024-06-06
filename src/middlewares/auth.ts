@@ -1,7 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 import { getUser } from "../service/auth.js";
-import { ObjectId } from "mongoose";
-import { JwtPayload } from "jsonwebtoken";
 
 
 // Extend Request interface to include token property
@@ -10,7 +8,8 @@ declare global {
         interface Request {
             user: {
                 user: String,
-                iat: String
+                iat: String,
+                role: string
             }
         }
     }
@@ -34,3 +33,11 @@ export const restrictToLoggedUserOnly = (req: Request, res: Response, next: Next
 //     req.user = user!;
 //     next();
 // }
+
+export const restrictTo = (roles: Array<string>) => {
+    return (req: Request, res: Response, next: NextFunction) => {
+        if (!req.user) return res.redirect('/ssr/login');
+        if (!roles.includes(req.user.role)) return res.end('Unauthorized');
+        next();
+    }
+}

@@ -20,7 +20,7 @@ export const handleGenerateShortURL = (req, res) => __awaiter(void 0, void 0, vo
         shortId,
         redirectURL: body.url,
         visitHistory: [],
-        createdBy: req.user
+        createdBy: req.user.user
     });
     return res.render('home', {
         id: shortId

@@ -17,3 +17,12 @@ export const restrictToLoggedUserOnly = (req, res, next) => {
 //     req.user = user!;
 //     next();
 // }
+export const restrictTo = (roles) => {
+    return (req, res, next) => {
+        if (!req.user)
+            return res.redirect('/ssr/login');
+        if (!roles.includes(req.user.role))
+            return res.end('Unauthorized');
+        next();
+    };
+};

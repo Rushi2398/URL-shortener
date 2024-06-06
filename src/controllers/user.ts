@@ -22,7 +22,10 @@ export const handleUserLogin = async (req: Request, res: Response) => {
     if (!user) return res.render('login', {
         error: "Invalid username or password"
     });
-    const token = setUser(user._id)
+    const token = setUser({
+        id: user._id,
+        role: user.role
+    })
     res.cookie('uid', token);
     return res.redirect('/ssr/');
 }
